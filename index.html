@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <form>
+            <label for="name">Name</label>
+            <input placeholder="Name" name="name" />
+            <br />
+            <label for="email">Email</label>
+            <input placeholder="Email" name="email" />
+            <br />
+            <label for="password">Password</label>
+            <input placeholder="Password" name="password" />
+            <br />
+            <button type="submit">Submit</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <script>
+        const renderTable = d => {
+            const tbody = document.querySelector('tbody');
+            let rawHtml = '';
+            d.forEach((item, i) => {
+                rawHtml += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${item.name}</td>
+                        <td>${item.email}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = rawHtml;
+        }
+            const post = async (data) => {
+                const resp = await fetch('http://localhost:3000', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const sdata = await resp.json();
+                console.log(sdata);
+
+                const r = await fetch('http://localhost:3000')
+                console.log(r);
+                const d = await r.json();
+
+                renderTable(d);
+            }
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                post(data)
+            });
+        </script>
+    </body>
+</html>
